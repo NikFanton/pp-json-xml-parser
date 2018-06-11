@@ -1,27 +1,31 @@
-package ua.training.xml;
+package ua.training.parser;
 
 import org.w3c.dom.*;
-import ua.training.json.Currency;
+import ua.training.entity.Person;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XmlFileManager {
-    private String path;
+public class XmlParser extends Parser<Person> {
+    private static final String PERSON = "person";
+    private static final String ID = "id";
+    private static final String NAME = "name";
+    private static final String ADDRESS = "address";
+    private static final String CASH = "cash";
+    private static final String EDUCATION = "education";
+    private static final String CATALOG = "catalog";
+    private static final String NOTEBOOK = "notebook";
 
-    public XmlFileManager(String path) {
-        this.path = path;
+    public XmlParser(File file) {
+        super(file);
     }
 
     public List<Person> getData() {
@@ -29,25 +33,25 @@ public class XmlFileManager {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = dbFactory.newDocumentBuilder();
-            Document doc = documentBuilder.parse(new File(path));
+            Document doc = documentBuilder.parse(file);
             doc.getDocumentElement().normalize();
-            NodeList notebook = doc.getElementsByTagName("person");
+            NodeList notebook = doc.getElementsByTagName(PERSON);
             for (int i = 0; i < notebook.getLength(); i++) {
                 Node person = notebook.item(i);
                 if (person.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) person;
                     Person p = new Person();
-                    p.setId(Long.valueOf(element.getAttribute("id")));
-                    p.setName(element.getElementsByTagName("name")
+                    p.setId(Long.valueOf(element.getAttribute(ID)));
+                    p.setName(element.getElementsByTagName(NAME)
                             .item(0)
                             .getTextContent());
-                    p.setAddress(element.getElementsByTagName("address")
+                    p.setAddress(element.getElementsByTagName(ADDRESS)
                             .item(0)
                             .getTextContent());
-                    p.setCash(Integer.valueOf(element.getElementsByTagName("cash")
+                    p.setCash(Integer.valueOf(element.getElementsByTagName(CASH)
                             .item(0)
                             .getTextContent()));
-                    p.setEducation(element.getElementsByTagName("education")
+                    p.setEducation(element.getElementsByTagName(EDUCATION)
                             .item(0)
                             .getTextContent());
                     result.add(p);
@@ -59,42 +63,39 @@ public class XmlFileManager {
         return result;
     }
 
-    public void saveData(Person[] people) {
+    public void saveData(List<Person> people) {
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
-            Element root = doc.createElement("catalog");
+            Element root = doc.createElement(CATALOG);
             doc.appendChild(root);
-            Element notebook = doc.createElement("notebook");
+            Element notebook = doc.createElement(NOTEBOOK);
             root.appendChild(notebook);
 
             for (Person p : people) {
-                Element person = doc.createElement("person");
+                Element person = doc.createElement(PERSON);
                 notebook.appendChild(person);
-                person.setAttribute("id", String.valueOf(p.getId()));
+                person.setAttribute(ID, String.valueOf(p.getId()));
 
-                Element name = doc.createElement("name");
+                Element name = doc.createElement(NAME);
                 name.appendChild(doc.createTextNode(p.getName()));
                 person.appendChild(name);
 
-                Element address = doc.createElement("address");
+                Element address = doc.createElement(ADDRESS);
                 address.appendChild(doc.createTextNode(p.getAddress()));
                 person.appendChild(address);
 
-                Element cash = doc.createElement("cash");
+                Element cash = doc.createElement(CASH);
                 cash.appendChild(doc.createTextNode(String.valueOf(p.getCash())));
                 person.appendChild(cash);
 
-                Element education = doc.createElement("education");
+                Element education = doc.createElement(EDUCATION);
                 education.appendChild(doc.createTextNode(p.getEducation()));
                 person.appendChild(education);
             }
-
-
-
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(path));
+            StreamResult result = new StreamResult(file);
             TransformerFactory.newInstance().newTransformer().transform(source, result);
         } catch (ParserConfigurationException | TransformerException e) {
             e.printStackTrace();
