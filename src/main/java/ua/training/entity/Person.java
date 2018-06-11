@@ -1,4 +1,4 @@
-package ua.training.xml;
+package ua.training.entity;
 
 public class Person {
     private Long id;

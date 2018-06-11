@@ -1,7 +1,8 @@
-package ua.training.parser;
+package ua.training.parser.impl;
 
 import org.w3c.dom.*;
 import ua.training.entity.Person;
+import ua.training.parser.Parser;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

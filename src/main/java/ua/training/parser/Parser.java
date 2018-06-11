@@ -1,13 +1,17 @@
-package ua.training;
+package ua.training.parser;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 public abstract class Parser<T> {
-    protected String path;
+    protected File file;
 
-    public Parser(String path) {
-        this.path = path;
+    public Parser(File file) {
+        this.file = file;
     }
 
-    public abstract T[] getData();
+    public abstract List<T> getData() throws IOException;
 
-    public abstract void saveData(T[] t);
+    public abstract void saveData(List<T> t);
 }

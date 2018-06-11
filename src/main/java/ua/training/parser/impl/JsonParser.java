@@ -1,7 +1,8 @@
-package ua.training.parser;
+package ua.training.parser.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ua.training.entity.Currency;
+import ua.training.parser.Parser;
 
 import java.io.*;
 import java.util.List;

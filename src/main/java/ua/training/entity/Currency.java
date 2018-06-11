@@ -1,4 +1,4 @@
-package ua.training.json;
+package ua.training.entity;
 
 public class Currency {
     private int r030;
