@@ -15,14 +15,14 @@ import java.util.stream.Collectors;
 
 public class Application {
     public static void main(String[] args) {
-//        useXmlParser();
+        useXmlParser();
         useJsonParser();
     }
 
     private static void useJsonParser() {
         try {
             URL url = new URL("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");
-            File file = new File("src/main/resources/file.xml");
+            File file = new File("src/main/resources/file.json");
             FileUtils.copyURLToFile(url, file);
             List<String> actualCurrencies = Arrays.asList("RUB", "USD", "EUR");
 

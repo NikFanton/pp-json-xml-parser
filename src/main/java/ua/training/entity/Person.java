@@ -1,5 +1,7 @@
 package ua.training.entity;
 
+import java.util.Objects;
+
 public class Person {
     private Long id;
     private String name;
@@ -46,6 +48,22 @@ public class Person {
 
     public void setCash(Integer cash) {
         this.cash = cash;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(id, person.id) &&
+                Objects.equals(name, person.name) &&
+                Objects.equals(address, person.address) &&
+                Objects.equals(cash, person.cash);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, address, cash);
     }
 
     @Override
