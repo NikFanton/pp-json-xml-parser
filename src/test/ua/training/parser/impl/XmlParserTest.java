@@ -27,7 +27,6 @@ public class XmlParserTest {
     public void getData() {
         List<Person> people = parser.getData();
         assertNotNull(people);
-        
     }
 
     @Test

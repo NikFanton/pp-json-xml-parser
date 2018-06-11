@@ -21,7 +21,6 @@ public class XmlParser extends Parser<Person> {
     private static final String NAME = "name";
     private static final String ADDRESS = "address";
     private static final String CASH = "cash";
-    private static final String EDUCATION = "education";
     private static final String CATALOG = "catalog";
     private static final String NOTEBOOK = "notebook";
 
@@ -29,6 +28,7 @@ public class XmlParser extends Parser<Person> {
         super(file);
     }
 
+    @Override
     public List<Person> getData() {
         List<Person> result = new ArrayList<>();
         try {
@@ -52,9 +52,6 @@ public class XmlParser extends Parser<Person> {
                     p.setCash(Integer.valueOf(element.getElementsByTagName(CASH)
                             .item(0)
                             .getTextContent()));
-                    p.setEducation(element.getElementsByTagName(EDUCATION)
-                            .item(0)
-                            .getTextContent());
                     result.add(p);
                 }
             }
@@ -64,7 +61,8 @@ public class XmlParser extends Parser<Person> {
         return result;
     }
 
-    public void saveData(List<Person> people) {
+    @Override
+    public void saveData(List<Person> people, File file) {
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -90,10 +88,6 @@ public class XmlParser extends Parser<Person> {
                 Element cash = doc.createElement(CASH);
                 cash.appendChild(doc.createTextNode(String.valueOf(p.getCash())));
                 person.appendChild(cash);
-
-                Element education = doc.createElement(EDUCATION);
-                education.appendChild(doc.createTextNode(p.getEducation()));
-                person.appendChild(education);
             }
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(file);

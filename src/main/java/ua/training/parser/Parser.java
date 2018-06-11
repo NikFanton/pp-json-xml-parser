@@ -13,5 +13,9 @@ public abstract class Parser<T> {
 
     public abstract List<T> getData() throws IOException;
 
-    public abstract void saveData(List<T> t);
+    public void saveData(List<T> t) {
+        saveData(t, file);
+    }
+
+    public abstract void saveData(List<T> t, File file);
 }

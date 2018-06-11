@@ -12,6 +12,7 @@ public class JsonParser extends Parser<Currency> {
         super(file);
     }
 
+    @Override
     public List<Currency> getData() {
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -23,7 +24,8 @@ public class JsonParser extends Parser<Currency> {
         return null;
     }
 
-    public void saveData(List<Currency> currencies) {
+    @Override
+    public void saveData(List<Currency> currencies, File file) {
         try (FileWriter writer = new FileWriter(file)) {
             ObjectMapper objectMapper = new ObjectMapper();
             writer.write(objectMapper.writeValueAsString(currencies));
